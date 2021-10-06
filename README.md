@@ -1,5 +1,5 @@
 # Project-Generator
-### *A function which generates a random and upredictable sequence of digits 0:9 or binary 0:1.*
+### *A function which generates a random and unpredictable sequence of digits 0:9 or binary 0:1.*
  Downloaded API from SMHI in JavaScript. Wind direction data from Kebnekaise in 
  real time is used as input for the built in Pseudo Random Algorithm which
  is updated almost every hour. Closest Weather station is used at the selected
