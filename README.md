@@ -8,7 +8,7 @@
  combined with Pseudo Random Algorithm to create True Random Whole Digits.
  Note that a Pseudo Random Algorithm can be replicated via "set.seed()", however
  with the API forecast data of the randomness of weather, the elements in the vector
- will change every hour i.e., set.seed will not output same sequence since the
+ will change every hour i.e., "set.seed()" will not output same sequence since the
  Pseudo Random Algorithm is based on the input from the wind direction vector.
  Even though wind direction data may be close in values from hour to hour,
  a slight change in input will output a completely new independent sequence.
