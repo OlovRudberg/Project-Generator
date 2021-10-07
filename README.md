@@ -6,7 +6,7 @@
  grid point. All wind direction data is a 10-day forecast which makes values more
  unpredictable. We use True Nature Randomness (logarithm of real wind direction forecast)
  combined with Pseudo Random Algorithm to create True Random Whole Digits.
- Note that a Pseudo Random Algorithm can be replicated via "set.seed", however
+ Note that a Pseudo Random Algorithm can be replicated via "set.seed()", however
  with the API forecast data of the randomness of weather, the elements in the vector
  will change every hour i.e., set.seed will not output same sequence since the
  Pseudo Random Algorithm is based on the input from the wind direction vector.
