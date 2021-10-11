@@ -19,10 +19,13 @@ vec <- NULL
 # Make logarithmic to get corresponding values from natural numbers to rational 
 # numbers, create a new variable which is the sorted logarithmic wind direction
 # vector then divide it into equal 10% quantiles such that when we assert [0:9],
-# the numbers will be close to uniformly distributed.
+# the numbers will be close to uniformly distributed. Same for binary choice where
+# the median of vector acts as cut-off point, the "mean" of our vector will not
+# work in our case sice it does not break it into even 50% quantiles.
 WindVec <- log(vec) 
 Vec <- sort(WindVec)
-Thresh <- split(Vec,((seq(length(Vec))-1)*10)%/%length(Vec)+1)
+ThreshD <- split(Vec,((seq(length(Vec))-1)*10)%/%length(Vec)+1)
+ThreshB <- split(Vec,Vec%/%median(Vec))
 Val <- c()
 
 
@@ -32,16 +35,16 @@ Val <- c()
    
   for (i in 1:length(WindVec)){
   
-    if (WindVec[i] < max(Thresh[[1]])){Val[i] <- 0}
-     else if (max(Thresh[[1]]) <= WindVec[i] & WindVec[i] < max(Thresh[[2]])){Val[i] <- 1}
-      else if (max(Thresh[[2]]) <= WindVec[i] & WindVec[i] < max(Thresh[[3]])){Val[i] <- 2} 
-       else if (max(Thresh[[3]]) <= WindVec[i] & WindVec[i] < max(Thresh[[4]])){Val[i] <- 3}
-        else if (max(Thresh[[4]]) <= WindVec[i] & WindVec[i] < max(Thresh[[5]])){Val[i] <- 4}
-         else if (max(Thresh[[5]]) <= WindVec[i] & WindVec[i] < max(Thresh[[6]])){Val[i] <- 5}
-          else if (max(Thresh[[6]]) <= WindVec[i] & WindVec[i] < max(Thresh[[7]])){Val[i] <- 6}
-           else if (max(Thresh[[7]]) <= WindVec[i] & WindVec[i] < max(Thresh[[8]])){Val[i] <- 7}
-            else if (max(Thresh[[8]]) <= WindVec[i] & WindVec[i] < max(Thresh[[9]])){Val[i] <- 8}
-             else if (max(Thresh[[9]]) <= WindVec[i] & WindVec[i] <= max(Thresh[[10]])){Val[i] <- 9}
+    if (WindVec[i] < max(ThreshD[[1]])){Val[i] <- 0}
+     else if (max(ThreshD[[1]]) <= WindVec[i] & WindVec[i] < max(ThreshD[[2]])){Val[i] <- 1}
+      else if (max(ThreshD[[2]]) <= WindVec[i] & WindVec[i] < max(ThreshD[[3]])){Val[i] <- 2} 
+       else if (max(ThreshD[[3]]) <= WindVec[i] & WindVec[i] < max(ThreshD[[4]])){Val[i] <- 3}
+        else if (max(ThreshD[[4]]) <= WindVec[i] & WindVec[i] < max(ThreshD[[5]])){Val[i] <- 4}
+         else if (max(ThreshD[[5]]) <= WindVec[i] & WindVec[i] < max(ThreshD[[6]])){Val[i] <- 5}
+          else if (max(ThreshD[[6]]) <= WindVec[i] & WindVec[i] < max(ThreshD[[7]])){Val[i] <- 6}
+           else if (max(ThreshD[[7]]) <= WindVec[i] & WindVec[i] < max(ThreshD[[8]])){Val[i] <- 7}
+            else if (max(ThreshD[[8]]) <= WindVec[i] & WindVec[i] < max(ThreshD[[9]])){Val[i] <- 8}
+             else if (max(ThreshD[[9]]) <= WindVec[i] & WindVec[i] <= max(ThreshD[[10]])){Val[i] <- 9}
  } 
 } else if (choice == "Binary"){
 
@@ -50,11 +53,16 @@ Val <- c()
 # of vector a 0 and all others 1.
   for (j in 1:length(WindVec)){
    
-    if (WindVec[j] < mean(WindVec)){Val[j] <- 0}
-     else if (mean(WindVec) <= WindVec[j]){Val[j] <- 1}
- }
+    if (WindVec[j] <= max(ThreshB[[1]])){Val[j] <- 0}
+    else if (max(ThreshB[[1]]) < WindVec[j] & WindVec[j] <= max(ThreshB[[2]])){Val[j] <- 1}
+  }
 }
 # We end by combining the unpredictability of wind direction with Pseudo Random
-# Algorithm to output a non-replicable sequence of random digits.
+# Algorithm to output a non-replicable sequence of random digits. Note that the
+# input given from the wind direction vector is approximately uniformly distributed
+# but the Pseudo Random Algorithm may not output evenly distributed fractions.
+# This means for example that there might be more 1s than 0s in the sequence.
+# However, that is not really important, what is important is its property of not
+# being reproducible or predicted.
  return(sample(Val, size, replace = TRUE))
 }
